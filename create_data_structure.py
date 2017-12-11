@@ -16,7 +16,7 @@ with open("Data_Entry_2017.csv") as a:
 	reader = csv.reader(a)
 	next(reader,None)
 	for row in reader:
-		if i < 2100:
+		#if i < 2200:
 			matching = [s for s in pathogens if s in row[1]]
 			for match in matching:
 				if match in file_dict:
@@ -25,27 +25,34 @@ with open("Data_Entry_2017.csv") as a:
 				else:
 					file_dict[match] = [row[0]]
 					count_dict[match] = 1
-		i += 1
+		#i += 1
 
 print(count_dict)
 
 if writeOut == True:
 	for directory in file_dict:
-		if not os.path.exists("data/train/%s"%(directory)):
+		if not os.path.exists("data/test/%s"%(directory)):
 			os.makedirs("data/train/%s"%(directory))
 			os.makedirs("data/validation/%s"%(directory))
+			os.makedirs("data/test/%s"%(directory))
 			for file in file_dict[directory]:
-				val =  np.random.uniform(0,1,1)
-				out_dir = "train"
-				if val < 0.1:
-					out_dir = "validation"
-				copyfile("images/%s"%(file), "data/%s/%s/%s"%(out_dir,directory,file))
+				if os.path.isfile("images/%s"%(file)):
+					val =  np.random.uniform(0,1,1)
+					out_dir = "train"
+					if val < 0.1:
+						out_dir = "validation"
+					elif val < 0.2:
+						out_dir = "test"
+					copyfile("images/%s"%(file), "data/%s/%s/%s"%(out_dir,directory,file))
 		else:
 			#do stuff
 			for file in file_dict[directory]:
-				val =  np.random.uniform(0,1,1)
-				out_dir = "train"
-				if val < 0.1:
-					out_dir = "validation"
-				copyfile("images/%s"%(file), "data/%s/%s/%s"%(out_dir,directory,file))
+				if os.path.isfile("images/%s"%(file)):
+					val =  np.random.uniform(0,1,1)
+					out_dir = "train"
+					if val < 0.1:
+						out_dir = "validation"
+					elif val < 0.2:
+						out_dir = "test"
+					copyfile("images/%s"%(file), "data/%s/%s/%s"%(out_dir,directory,file))
 

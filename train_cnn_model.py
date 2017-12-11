@@ -34,7 +34,7 @@ validation_data_dir = 'data/validation'
 nb_train_samples = 1449
 nb_validation_samples = 168
 epochs = 1
-batch_size = 70
+batch_size = 40
 
 #make sure the numpy arrays are formatted correctly based on the system settings
 if K.image_data_format() == 'channels_first':
@@ -58,7 +58,7 @@ model.add(MaxPooling2D(pool_size=(4, 4)))
 #create a fully connected layer followed by a filter layer of size 1k and then the output layer
 model.add(Flatten())
 model.add(Dense(1000, activation='relu'))
-model.add(Dense(num_classes, activation='relu'))
+model.add(Dense(num_classes, activation='sigmoid'))
 
 #compile the model with the assigned loss and optimizer -- metrics here are only for training info.
 model.compile(loss='categorical_crossentropy',
